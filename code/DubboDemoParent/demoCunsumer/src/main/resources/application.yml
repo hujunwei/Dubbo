@@ -1,5 +1,0 @@
-dubbo:
-  application:
-    name: dubbo-cunsumer
-  registry:
-     address: zookeeper://192.168.93.10:2181
