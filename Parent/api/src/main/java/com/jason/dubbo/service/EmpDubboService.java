@@ -1,16 +1,14 @@
-package com.jason.mapper;
+package com.jason.dubbo.service;
 
 import com.jason.pojo.Emp;
 
 import java.util.List;
 
 /**
- * @Description: PACKAGE_NAME
+ * @Description: com.jason.dubbo.service
  */
-public interface EmpMapper {
+public interface EmpDubboService {
     int insertEmp(Emp emp);
 
     List<Emp> findEmpByDeptId(Integer did);
-
-    List<Emp> showAll();
 }

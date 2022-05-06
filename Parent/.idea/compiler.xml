@@ -6,10 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api" />
         <module name="mapper" />
-        <module name="provider" />
+        <module name="emp" />
+        <module name="api" />
         <module name="dept" />
+        <module name="provider" />
         <module name="pojo" />
       </profile>
     </annotationProcessing>
@@ -19,6 +20,7 @@
       <module name="Parent" options="-parameters" />
       <module name="api" options="-parameters" />
       <module name="dept" options="-parameters" />
+      <module name="emp" options="-parameters" />
       <module name="mapper" options="-parameters" />
       <module name="pojo" options="-parameters" />
       <module name="provider" options="-parameters" />

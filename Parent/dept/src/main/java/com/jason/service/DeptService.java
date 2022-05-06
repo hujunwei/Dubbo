@@ -1,6 +1,7 @@
 package com.jason.service;
 
 import com.jason.pojo.Dept;
+import com.jason.pojo.Emp;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface DeptService {
     public List<Dept> findAll();
+
+    public List<Emp> findEmpByDeptId(Integer deptId);
 }
