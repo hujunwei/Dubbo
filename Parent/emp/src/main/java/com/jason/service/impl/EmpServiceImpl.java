@@ -5,6 +5,7 @@ import com.jason.dubbo.service.EmpDubboService;
 import com.jason.pojo.Dept;
 import com.jason.pojo.Emp;
 import com.jason.service.EmpService;
+import com.jason.utils.FastDFSClient;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,8 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * @Description: com.jason.service.impl
@@ -31,29 +35,18 @@ public class EmpServiceImpl implements EmpService {
     @Override
     public int insertEmp(Emp emp, MultipartFile file) {
         try {
-            // 通过Spring容器获取HttpServletRequest对象
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            // 通过HttpServletRequest对象 获取图片将要上传路径
-            String path = request.getServletContext().getRealPath("/img");
+            InputStream inputStream = file.getInputStream();
 
-            // 生成随机文件名以保证文件名高并发下不重复 并获取后缀名
-            long currentTimeMills = System.currentTimeMillis();
-            Random random = new Random();
-            String fileName = currentTimeMills + "" + random.nextInt(1000);
             String oldName = file.getOriginalFilename();
-            fileName += oldName.substring(oldName.lastIndexOf("."));
+            String fileName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
 
-            // 如果上传的dir不存在mkdir
-            File pathFile = new File(path);
-            if (!pathFile.exists()) {
-                pathFile.mkdirs();
-            }
+            System.out.println("filename: " + fileName);
 
-            // 把文件写入dir
-            file.transferTo(new File(path, fileName));
+            String[] results = FastDFSClient.uploadFile(inputStream, fileName);
+            System.out.println(Arrays.toString(results));
 
-            // 把整个路径存入emp 对象插入数据库
-            emp.setPhoto("http://localhost:8081/img/" + fileName);
+            // {UUID}.XXX
+            emp.setPhoto(results[1]);
         } catch (IOException e) {
             e.printStackTrace();
         }
