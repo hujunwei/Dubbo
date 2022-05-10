@@ -3,14 +3,20 @@ package com.jason.controller;
 import com.jason.pojo.Emp;
 import com.jason.service.DeptService;
 import com.jason.utils.FastDFSClient;
+import org.apache.dubbo.common.json.JSON;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: com.jason.controller
@@ -41,6 +47,7 @@ public class DeptController {
             String photo = emp.getPhoto();
 
             if (null != photo && "" != photo) {
+                // TODO: should not hard code "group1", instead, add a new column in db to store such info
                 InputStream inputStream = FastDFSClient.downloadFile("group1", photo);
 
                 if (null == inputStream) {
@@ -71,5 +78,12 @@ public class DeptController {
         model.addAttribute("list", empList);
 
         return "showEmp";
+    }
+    
+    @PostMapping("/upload")
+    @ResponseBody
+    public Map<String, Object> kindEditorUploadMultipleFiles(MultipartFile imgFile) {
+        Map<String, Object> stringObjectMap = deptService.kindEditorUploadMultipleFiles(imgFile);
+        return stringObjectMap;
     }
 }
